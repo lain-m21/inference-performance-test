@@ -1,0 +1,5 @@
+onnx==1.4.1
+onnxruntime==0.3.0
+google==2.0.2
+future==0.17.1
+cnn-finetune==0.5.3
