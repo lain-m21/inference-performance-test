@@ -7,3 +7,9 @@ Deep Learning models inference performance test
 - `torch` serving scripts
 - performance test on local
 - performance test on k8s
+
+## Findings
+- `onnxruntime` conflicts with  `pytorch` when `conda` env is not used
+- `tensorflow_model_server` does inference much slower than `onnxruntime`
+ even when optimized one is used,
+ possibly because of the latency of `make_tensor_proto`
