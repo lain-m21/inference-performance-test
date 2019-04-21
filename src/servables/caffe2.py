@@ -10,7 +10,7 @@ class Caffe2Predictor:
         self.input_name = model_onnx.graph.input[0].name
         self.input_size = input_size
 
-    def predict(self, input_array: np.ndarray):
+    def predict(self, input_array: np.ndarray) -> np.ndarray:
         assert input_array.shape == self.input_size
         input_array = input_array.astype(np.float32)
         outputs = self.model.run({self.input_name: input_array})[0]

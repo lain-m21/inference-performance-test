@@ -8,7 +8,7 @@ class PyTorchPredictor:
         self.model.eval()
         self.input_size = input_size
 
-    def predict(self, input_array: np.ndarray):
+    def predict(self, input_array: np.ndarray) -> np.ndarray:
         assert input_array.shape == self.input_size
         input_array = input_array.astype(np.float32)
         input_tensor = torch.FloatTensor(input_array)

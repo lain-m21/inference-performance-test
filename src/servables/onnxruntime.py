@@ -9,7 +9,7 @@ class ONNXRuntimePredictor:
         self.label_name = self.model.get_outputs()[0].name
         self.input_size = input_size
 
-    def predict(self, input_array: np.ndarray):
+    def predict(self, input_array: np.ndarray) -> np.ndarray:
         assert input_array.shape == self.input_size
         input_array = input_array.astype(np.float32)
         outputs = self.model.run([self.label_name], {self.input_name: input_array})[0]
