@@ -27,10 +27,33 @@ def main():
         model = VGG16(weights=None, include_top=True, classes=args.num_classes)
     elif args.model_name == 'vgg19':
         model = VGG19(weights=None, include_top=True, classes=args.num_classes)
+    elif args.model_name == 'resnet50':
+        model = ResNet50(weights=None, include_top=True, classes=args.num_classes)
+    elif args.model_name == 'inception_v3':
+        model = InceptionV3(weights=None, include_top=True, classes=args.num_classes)
+    elif args.model_name == 'inceptionresnetv2':
+        model = InceptionResNetV2(weights=None, include_top=True, classes=args.num_classes)
+    elif args.model_name == 'xception':
+        model = Xception(weights=None, include_top=True, classes=args.num_classes)
+    elif args.model_name == 'densenet121':
+        model = DenseNet121(weights=None, include_top=True, classes=args.num_classes)
+    elif args.model_name == 'densenet169':
+        model = DenseNet169(weights=None, include_top=True, classes=args.num_classes)
+    elif args.model_name == 'densenet201':
+        model = DenseNet201(weights=None, include_top=True, classes=args.num_classes)
+    elif args.model_name == 'nasnetlarge':
+        model = NASNetLarge(weights=None, include_top=True, classes=args.num_classes)
+    elif args.model_name == 'nasnetmobile':
+        model = NASNetMobile(weights=None, include_top=True, classes=args.num_classes)
+    elif args.model_name == 'mobilenet':
+        model = MobileNet(weights=None, include_top=True, classes=args.num_classes)
+    elif args.model_name == 'mobilenetv2':
+        model = MobileNetV2(weights=None, include_top=True, classes=args.num_classes)
+    else:
+        raise ValueError('The given model is not supported.')
 
-    input_size = (1,) + tuple(model.original_model_info.input_size)
-    _logger.info('Create dummy input to the model with the shape {}.'.format(input_size))
-    x_dummy = torch.rand(input_size)
+    model = MobileNetV2(weights=None, include_top=True, classes=args.num_classes)
+    input_size = (1,) + model.input_shape[1:]
 
     _logger.info('Export the model as a ONNX format to {}.'.format(model_save_path))
     torch.onnx.export(model, x_dummy, model_save_path, export_params=True)
