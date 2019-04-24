@@ -12,7 +12,7 @@ class PredictionService:
 
         model_info = json.load(open(model_info_path, 'r'))
         model_path = model_info['model_path']
-        input_size = model_info['input_size']
+        input_size = tuple(model_info['input_size'])
 
         if servable_type == 'pytorch':
             self.predictor = PyTorchPredictor(model_path, input_size)
