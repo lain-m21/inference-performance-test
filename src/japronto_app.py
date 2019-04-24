@@ -19,8 +19,8 @@ def predict(request):
     data = request.json
     input_data = data['input']
     outputs = api.predict(input_data)
-    return request.Response(text='')
-    # return request.Response(text=json.dumps({'outputs': outputs.tolist()}))
+    # return request.Response(text='')
+    return request.Response(text=json.dumps({'outputs': outputs.tolist()}))
 
 
 def health(request):
