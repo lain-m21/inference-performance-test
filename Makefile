@@ -1,5 +1,5 @@
 TF_SERVING_VERSION_GIT_BRANCH="r1.13"
-TF_SERVING_BUILD_OPTIONS="--copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-msse4.1 --copt=-msse4.2"
+TF_SERVING_BUILD_OPTIONS="--copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-msse4.1 --copt=-msse4.2 --copt=-O3"
 TF_SERVING_IMAGE="tensorflow/serving:latest"
 TF_SERVING_OPTIMIZED_IMAGE="tmp/tensorflow-serving-devel:0.0.1"
 
