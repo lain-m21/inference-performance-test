@@ -17,3 +17,7 @@ build-tf-serving-optimized-image:
     --build-arg TF_SERVING_VERSION_GIT_BRANCH="${TF_SERVING_VERSION_GIT_BRANCH}" \
     --build-arg TF_SERVING_BUILD_OPTIONS="${TF_SERVING_BUILD_OPTIONS}" \
     -f dockerfiles/Dockerfile.tf_serving.optimized .
+
+.PHONY: install-vegeta-attack
+install-vegeta-attack:
+	go get -u github.com/tsenart/vegeta
