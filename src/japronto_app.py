@@ -44,9 +44,13 @@ def main():
     parser.add_argument('--debug',
                         action='store_true',
                         help='debug mode')
+    parser.add_argument('--num_workers',
+                        default=1,
+                        type=int,
+                        help='number of workers to run app')
     args = parser.parse_args()
 
-    app.run(host=args.host, port=args.port, debug=args.debug)
+    app.run(host=args.host, port=args.port, debug=args.debug, worker_num=args.num_workers)
 
 
 if __name__ == '__main__':
