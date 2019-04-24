@@ -16,10 +16,8 @@ api = PredictionService()
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    print(request.data)
-    print(request.get_json())
-    # data = json.loads(request.data)
-    data = request.get_json()
+    data = json.loads(request.data)
+    # data = request.get_json()
     input_data = data['input']
     outputs = api.predict(input_data)
     return jsonify({'outputs': outputs.tolist()})
