@@ -44,7 +44,7 @@ def main():
     parser.add_argument('--debug',
                         action='store_true',
                         help='debug mode')
-    parser.add_argument('--num_workers',
+    parser.add_argument('--num-workers',
                         default=1,
                         type=int,
                         help='number of workers to run app')
