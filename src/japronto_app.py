@@ -17,8 +17,6 @@ api = PredictionService()
 
 def predict(request):
     data = request.json
-    logger.info(data.keys())
-    # data = json.loads(request.json)
     input_data = data['input']
     outputs = api.predict(input_data)
     return request.Response(text=json.dumps({'outputs': outputs.tolist()}))
