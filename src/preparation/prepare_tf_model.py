@@ -2,6 +2,7 @@ import json
 import logging
 import argparse
 from pathlib import Path
+import tensorflow as tf
 from tensorflow.python.keras.applications import *
 
 _logger = logging.getLogger(__name__)
@@ -17,10 +18,8 @@ def main():
     parser.add_argument('--model-name', type=str, default='densenet121', choices=SUPPORTED_MODELS)
     parser.add_argument('--num-classes', type=int, default=1000)
     parser.add_argument('--data-dir', type=str, default='./data')
-    parser.add_argument('--save-name', type=str, default='densenet121_torch')
+    parser.add_argument('--save-name', type=str, default='densenet121_tf')
     args = parser.parse_args()
-
-    model_save_path = str(Path(args.data_dir).joinpath(args.save_name + '.onnx'))
 
     _logger.info('Prepare model.')
     if args.model_name == 'vgg16':
@@ -52,14 +51,23 @@ def main():
     else:
         raise ValueError('The given model is not supported.')
 
-    model = MobileNetV2(weights=None, include_top=True, classes=args.num_classes)
     input_size = (1,) + model.input_shape[1:]
 
-    _logger.info('Export the model as a ONNX format to {}.'.format(model_save_path))
-    torch.onnx.export(model, x_dummy, model_save_path, export_params=True)
+    saved_model_path = str(Path(args.data_dir).joinpath(args.save_name))
+
+    tf.keras.backend.set_learning_phase(0)
+
+    _logger.info('Export the model as a saved_model.pb format to {}.'.format(saved_model_path))
+    with tf.keras.backend.get_session() as sess:
+        tf.saved_model.simple_save(
+            sess,
+            saved_model_path,
+            inputs={'input_tensor': model.input},
+            outputs={t.name: t for t in model.outputs}
+        )
 
     model_info = {
-        'model_path': model_save_path,
+        'model_path': saved_model_path,
         'input_size': input_size
     }
     model_info_path = Path(args.data_dir).joinpath(args.save_name + '.json')
