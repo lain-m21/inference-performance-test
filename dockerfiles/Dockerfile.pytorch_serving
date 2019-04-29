@@ -1,3 +1,12 @@
 FROM pytorch/pytorch:latest
 
-COPY src /src
+WORKDIR /workspace
+
+COPY src ./src
+COPY requirements.txt ./requirements.txt
+
+RUN apt-get install libev-dev
+RUN pip install -r requirements.txt
+
+# REST
+EXPOSE 8501
