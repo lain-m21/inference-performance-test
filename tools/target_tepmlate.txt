@@ -1,0 +1,3 @@
+POST http://localhost:8501/predict
+Content-Type: application/json
+@data/payload.json
