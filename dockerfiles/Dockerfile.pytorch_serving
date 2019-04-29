@@ -1,1 +1,3 @@
 FROM pytorch/pytorch:latest
+
+COPY src /src
