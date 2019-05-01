@@ -24,9 +24,9 @@ async def predict(request):
 
 
 @app.route('/', methods=['GET'])
-def health():
+def health(request):
     logger.info("[HEALTH] GET")
-    return ''
+    return json({'status': 'OK'})
 
 
 def main():
