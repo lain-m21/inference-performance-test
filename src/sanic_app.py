@@ -2,7 +2,7 @@ import json
 import logging
 import argparse
 from sanic import Sanic
-from sanic.response import json
+from sanic.response import json as sanic_json
 
 from src.api import PredictionService
 
@@ -20,13 +20,13 @@ async def predict(request):
     data = json.loads(request.json)
     input_data = data['input']
     outputs = api.predict(input_data)
-    return json({'outputs': outputs.tolist()})
+    return sanic_json({'outputs': outputs.tolist()})
 
 
 @app.route('/', methods=['GET'])
 def health(request):
     logger.info("[HEALTH] GET")
-    return json({'status': 'OK'})
+    return sanic_json({'status': 'OK'})
 
 
 def main():
