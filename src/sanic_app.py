@@ -17,7 +17,7 @@ api = PredictionService()
 
 @app.route('/predict', methods=['POST'])
 async def predict(request):
-    data = json.loads(request.json)
+    data = request.json
     input_data = data['input']
     outputs = api.predict(input_data)
     return sanic_json({'outputs': outputs.tolist()})
