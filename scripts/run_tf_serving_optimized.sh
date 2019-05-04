@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Ex: ./scripts/run_tf_serving_optimized.sh densenet121_tf 8500 8501
+
 TF_SERVING_IMAGE="tmp/tensorflow-serving-devel:0.0.1"
 SAVED_MODEL_NAME=$1
 GRPC_PORT_TUNNEL=$2
