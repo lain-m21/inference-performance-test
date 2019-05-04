@@ -19,7 +19,7 @@ def main():
     parser.add_argument('--model-name', type=str, default='densenet121', choices=SUPPORTED_MODELS)
     parser.add_argument('--num-classes', type=int, default=1000)
     parser.add_argument('--data-dir', type=str, default='./data')
-    parser.add_argument('--save-name', type=str, default='densenet121_torch')
+    parser.add_argument('--save-name', type=str, default='densenet121_onnx')
     args = parser.parse_args()
 
     model_save_path = str(Path(args.data_dir).joinpath(args.save_name + '.onnx'))
@@ -41,7 +41,7 @@ def main():
         'model_path': model_save_path,
         'input_size': input_size
     }
-    model_info_path = Path(args.data_dir).joinpath(args.save_name + '.json')
+    model_info_path = Path(args.data_dir).joinpath(args.save_name + '_info.json')
     _logger.info('Save model info to {}.'.format(model_info_path))
     json.dump(model_info, model_info_path.open('w'))
 

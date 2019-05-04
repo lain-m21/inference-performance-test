@@ -70,7 +70,7 @@ def main():
         'model_path': saved_model_path,
         'input_size': input_size
     }
-    model_info_path = Path(args.data_dir).joinpath(args.save_name + '.json')
+    model_info_path = Path(args.data_dir).joinpath(args.save_name + '_info.json')
     _logger.info('Save model info to {}.'.format(model_info_path))
     json.dump(model_info, model_info_path.open('w'))
 
