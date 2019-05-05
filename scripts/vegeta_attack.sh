@@ -1,14 +1,39 @@
 #!/bin/bash
 
-# Ex: ./scripts/vegeta_attack.sh 10 5 ./tools/target_onnx.txt ./data/vegeta_result_onnx.bin
+# Ex: ./scripts/vegeta_attack.sh tensorflow densenet121 8501 ./data/densenet121_tf_payload.json 10 5
 
-RATE=$1
-DURATION=$2
+
 TARGET=${3:-tools/target.txt}
 OUTPUT=${4:-data/vegeta_result.bin}
 
-echo "Vegeta attack - rate = ${RATE}, duration = ${DURATION}, target = ${TARGET}, output = ${OUTPUT}"
+SERVING_TYPE=$1
+MODEL_NAME=${2:-none}
+PORT=$3
+PAYLOAD=$4
+RATE=$5
+DURATION=$6
+OUTPUT=${7:-data/vegeta_result.bin}
 
-vegeta attack -rate=${RATE} -duration=${DURATION}s -targets=${TARGET} > ${OUTPUT}
+TF_ADDRESS="http://localhost:${PORT}/v1/models/${MODEL_NAME}:predict"
+ONNX_ADDRESS="http://localhost:${PORT}/predict"
+
+if [[ ${SERVING_TYPE} = "tensorflow" ]]; then
+    ADDRESS=${TF_ADDRESS}
+else
+    ADDRESS=${ONNX_ADDRESS}
+fi
+
+echo "POST ${ADDRESS}\n\
+Content-Type: application/json\n\
+@${PAYLOAD}
+" > ./tools/target.txt
+
+echo "Warm up serving before vegeta attack"
+jq . ${PAYLOAD} | curl -s -o /dev/null -X POST ${ADDRESS} -H "Content-Type: application/json" -d @-
+
+echo "Vegeta attack on ${SERVING_TYPE} ${MODEL_NAME} with rate = ${RATE}, duration = ${DURATION}, output = ${OUTPUT}"
+
+vegeta attack -rate=${RATE} -duration=${DURATION}s -targets=./tools/target.txt > ${OUTPUT}
+
 cat ${OUTPUT} | vegeta report
 cat ${OUTPUT} | vegeta report -type='hist[0,100ms,200ms,300ms,400ms,500ms,1s,2s,3s,4s,5s]'
