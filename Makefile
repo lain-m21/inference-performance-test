@@ -10,6 +10,10 @@ ONNX_SERVING_SANIC_IMAGE="tmp/onnx-serving-sanic:0.0.1"
 pull-tf-serving-image:
 	docker pull ${TF_SERVING_IMAGE}
 
+.PHONY: install-vegeta-attack
+install-vegeta-attack:
+	go get -u github.com/tsenart/vegeta
+
 .PHONY: build-tf-serving-optimized-image
 build-tf-serving-optimized-image:
 	docker build --pull -t ${TF_SERVING_OPTIMIZED_IMAGE} \
@@ -32,6 +36,13 @@ build-onnx-sanic-image:
 .PHONY: builld-all
 build-all: build-tf-serving-optimized-image build-onnx-flask-image build-onnx-sanic-image
 
-.PHONY: install-vegeta-attack
-install-vegeta-attack:
-	go get -u github.com/tsenart/vegeta
+.PHONY: load-test-densenet121
+load-test-densenet121:
+	python -m src.preparation.prepare_tf_model --model-name densenet121 --save-name densenet121_tf
+	python -m src.preparation.prepare_onnx_model --model-name densenet121 --save-name densenet121_onnx
+	./scripts/run_tf_serving_optimized.sh densenet121_tf 8500 8501
+	./scripts/run_onnx_serving.sh sanic onnxruntime densenet121_onnx_info.json 18501
+	python -m src.preparation.prepare_tf_inputs --save-path densenet121_tf_payload.json
+	python -m src.preparation.prepare_onnx_inputs --save-path densenet121_onnx_payload.json
+	./scripts/vegeta_attack.sh tensorflow densenet121_tf 8501 ./data/densenet121_tf_payload.json 10 5
+	./scripts/vegeta_attack.sh onnx densenet121 18501 ./data/densenet121_onnx_payload.json 10 5
