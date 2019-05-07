@@ -69,4 +69,4 @@ clean-outputs-onnx:
 clean-all-outputs: clean-outputs-tf clean-outputs-onnx
 
 .PHONY: load-test-and-clean
-load-test: load-test-tf load-test-onnx clean-servings clean-all-outputs
+load-test-and-clean: load-test-tf load-test-onnx clean-servings clean-all-outputs
