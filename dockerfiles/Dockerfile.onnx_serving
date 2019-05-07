@@ -11,4 +11,6 @@ RUN pip install -r requirements.txt
 # REST
 EXPOSE 8501
 
-ENTRYPOINT ["python -m src.wsgi"]
+RUN echo "python -m src.wsgi" > ./run_server.sh && chmod +x ./run_server.sh
+
+ENTRYPOINT ["/bin/bash", "./run_server.sh"]
