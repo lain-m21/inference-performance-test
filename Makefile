@@ -67,19 +67,19 @@ clean-onnx-serving:
 	docker container rm -f onnxruntime_serving
 	docker container rm -f caffe2_serving
 
-.PHONY: clean-servings
-clean-servings: clean-tf-serving clean-onnx-serving
+.PHONY: clean-all-servings
+clean-all-servings: clean-tf-serving clean-onnx-serving
 
-.PHONY: clean-outputs-tf
-clean-outputs-tf:
+.PHONY: clean-tf-outputs
+clean-tf-outputs:
 	rm -r data/${MODEL}_tf* data/result_${MODEL}_tf*
 
-.PHONY: clean-outputs-onnx
-clean-outputs-onnx:
+.PHONY: clean-onnx-outputs
+clean-onnx-outputs:
 	rm -r data/${MODEL}_onnx* data/result_${MODEL}_onnx*
 
 .PHONY: clean-all-outputs
-clean-all-outputs: clean-outputs-tf clean-outputs-onnx
+clean-all-outputs: clean-tf-outputs clean-onnx-outputs
 
 .PHONY: load-test-and-clean
-load-test-and-clean: load-test-tf load-test-onnx clean-servings clean-all-outputs
+load-test-and-clean: load-test-tf load-test-onnx clean-all-servings clean-all-outputs
