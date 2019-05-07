@@ -23,10 +23,9 @@ else
     ADDRESS=${ONNX_ADDRESS}
 fi
 
-echo "POST ${ADDRESS}\n\
+echo -e "POST ${ADDRESS}\n\
 Content-Type: application/json\n\
-@${PAYLOAD}
-" > ./tools/target.txt
+@${PAYLOAD}" > ./tools/target.txt
 
 echo "Warm up serving before vegeta attack"
 jq . ${PAYLOAD} | curl -s -o /dev/null -X POST ${ADDRESS} -H "Content-Type: application/json" -d @-
