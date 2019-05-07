@@ -54,3 +54,14 @@ clean-onnx-serving:
 
 .PHONY: clean-servings
 clean-servings: clean-tf-serving clean-onnx-serving
+
+.PHONY: clean-outputs-tf
+clean-outputs-tf:
+	rm -r data/${MODEL}_tf*
+
+.PHONY: clean-outputs-onnx
+clean-outputs-onnx:
+	rm -r data/${MODEL}_onnx*
+
+.PHONY: clean-all-outputs
+clean-all-outputs: clean-outputs-tf clean-outputs-onnx
