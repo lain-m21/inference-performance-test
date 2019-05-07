@@ -53,7 +53,7 @@ def main():
 
     input_size = (1,) + model.input_shape[1:]
 
-    saved_model_path = str(Path(args.data_dir).joinpath(args.save_name))
+    saved_model_path = str(Path(args.data_dir).joinpath(args.save_name).joinpath('./1'))
 
     tf.keras.backend.set_learning_phase(0)
 
