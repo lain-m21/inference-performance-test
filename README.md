@@ -38,10 +38,10 @@ Deep Learning models inference performance test
 ### 5. Prepare inputs for load test
 
     # TensorFlow Serving inputs
-    python -m src.preparation.prepare_tf_inputs --save-path densenet121_tf_payload.json
+    python -m src.preparation.prepare_tf_inputs --model-info-path densenet121_tf_info.json --save-path densenet121_tf_payload.json
     
     # ONNX Serving inputs
-    python -m src.preparation.prepare_onnx_inputs --save-path densenet121_onnx_payload.json
+    python -m src.preparation.prepare_onnx_inputs --model-info-path densenet121_onnx_info.json --save-path densenet121_onnx_payload.json
 
 
 ### 6. Run Vegeta attack to perform load test
