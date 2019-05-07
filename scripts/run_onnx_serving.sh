@@ -11,7 +11,7 @@ CONTAINER_NAME=${5:-onnx_serving}
 ONNX_SERVING_IMAGE="tmp/onnx-serving:0.0.1"
 DATA_DIR="/workspace/data"
 
-docker run -d -p ${REST_PORT_TUNNEL}:8501 --rm -n ${CONTAINER_NAME}\
+docker run -d -p ${REST_PORT_TUNNEL}:8501 --rm --name ${CONTAINER_NAME}\
     -v $(pwd)/data:${DATA_DIR} \
     -e MODEL_INFO_PATH=${DATA_DIR}/${MODEL_INFO_PATH} \
     -e SERVABLE_TYPE=${SERVABLE_TYPE} \
