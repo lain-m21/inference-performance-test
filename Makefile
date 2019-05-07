@@ -37,14 +37,26 @@ load-test-tf:
 	python -m src.preparation.prepare_tf_model --model-name ${MODEL} --save-name ${MODEL}_tf
 	./scripts/run_tf_serving_optimized.sh ${MODEL}_tf 8500 8501
 	python -m src.preparation.prepare_tf_inputs --model-info-path ${MODEL}_tf_info.json --save-path ${MODEL}_tf_payload.json
-	./scripts/vegeta_attack.sh tensorflow ${MODEL}_tf 8501 ./data/${MODEL}_tf_payload.json ${RATE} ${DURATION}
+	./scripts/vegeta_attack.sh tensorflow ${MODEL}_tf 8501 ./data/${MODEL}_tf_payload.json 5 5 ./data/result_${MODEL}_tf_5_5.bin
+	./scripts/vegeta_attack.sh tensorflow ${MODEL}_tf 8501 ./data/${MODEL}_tf_payload.json 10 5 ./data/result_${MODEL}_tf_10_5.bin
+	./scripts/vegeta_attack.sh tensorflow ${MODEL}_tf 8501 ./data/${MODEL}_tf_payload.json 20 5 ./data/result_${MODEL}_tf_20_5.bin
+	./scripts/vegeta_attack.sh tensorflow ${MODEL}_tf 8501 ./data/${MODEL}_tf_payload.json 30 5 ./data/result_${MODEL}_tf_30_5.bin
+
 
 .PHONY: load-test-onnx
 load-test-onnx:
 	python -m src.preparation.prepare_onnx_model --model-name ${MODEL} --save-name ${MODEL}_onnx
 	./scripts/run_onnx_serving.sh sanic onnxruntime ${MODEL}_onnx_info.json 18501
+	./scripts/run_onnx_serving.sh sanic caffe2 ${MODEL}_onnx_info.json 28501
 	python -m src.preparation.prepare_onnx_inputs --model-info-path ${MODEL}_onnx_info.json --save-path ${MODEL}_onnx_payload.json
-	./scripts/vegeta_attack.sh onnx ${MODEL} 18501 ./data/${MODEL}_onnx_payload.json ${RATE} ${DURATION}
+	./scripts/vegeta_attack.sh onnx ${MODEL} 18501 ./data/${MODEL}_onnx_payload.json 5 5 ./data/result_${MODEL}_onnxruntime_5_5.bin
+	./scripts/vegeta_attack.sh onnx ${MODEL} 18501 ./data/${MODEL}_onnx_payload.json 10 5 ./data/result_${MODEL}_onnxruntime_10_5.bin
+	./scripts/vegeta_attack.sh onnx ${MODEL} 18501 ./data/${MODEL}_onnx_payload.json 20 5 ./data/result_${MODEL}_onnxruntime_20_5.bin
+	./scripts/vegeta_attack.sh onnx ${MODEL} 18501 ./data/${MODEL}_onnx_payload.json 30 5 ./data/result_${MODEL}_onnxruntime_30_5.bin
+	./scripts/vegeta_attack.sh onnx ${MODEL} 28501 ./data/${MODEL}_onnx_payload.json 5 5 ./data/result_${MODEL}_caffe2_5_5.bin
+	./scripts/vegeta_attack.sh onnx ${MODEL} 28501 ./data/${MODEL}_onnx_payload.json 10 5 ./data/result_${MODEL}_caffe2_10_5.bin
+	./scripts/vegeta_attack.sh onnx ${MODEL} 28501 ./data/${MODEL}_onnx_payload.json 20 5 ./data/result_${MODEL}_caffe2_20_5.bin
+	./scripts/vegeta_attack.sh onnx ${MODEL} 28501 ./data/${MODEL}_onnx_payload.json 30 5 ./data/result_${MODEL}_caffe2_30_5.bin
 
 .PHONY: clean-tf-serving
 clean-tf-serving:
@@ -59,11 +71,11 @@ clean-servings: clean-tf-serving clean-onnx-serving
 
 .PHONY: clean-outputs-tf
 clean-outputs-tf:
-	rm -r data/${MODEL}_tf*
+	rm -r data/${MODEL}_tf* data/result_${MODEL}_tf*
 
 .PHONY: clean-outputs-onnx
 clean-outputs-onnx:
-	rm -r data/${MODEL}_onnx*
+	rm -r data/${MODEL}_onnx* data/result_${MODEL}_onnx*
 
 .PHONY: clean-all-outputs
 clean-all-outputs: clean-outputs-tf clean-outputs-onnx
