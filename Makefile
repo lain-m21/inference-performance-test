@@ -15,7 +15,7 @@ install-vegeta-attack:
 
 .PHONY: build-tf-serving-optimized-image
 build-tf-serving-optimized-image:
-	docker build --pull -t ${TF_SERVING_OPTIMIZED_IMAGE} --no-cache \
+	docker build --pull -t ${TF_SERVING_OPTIMIZED_IMAGE} \
     --build-arg TF_SERVING_VERSION_GIT_BRANCH="${TF_SERVING_VERSION_GIT_BRANCH}" \
     --build-arg TF_SERVING_BUILD_OPTIONS="${TF_SERVING_BUILD_OPTIONS}" \
     -f dockerfiles/Dockerfile.tf_serving.optimized .
@@ -27,3 +27,14 @@ build-onnx-image:
 
 .PHONY: builld-all
 build-all: build-tf-serving-optimized-image build-onnx-image
+
+.PHONY: clean-tf-serving
+clean-tf-serving:
+	docker container rm -f tf_serving
+
+.PHONY: clean-onnx-serving
+clean-onnx-serving:
+	docker container rm -f onnx_serving
+
+.PHONY: clean-servings
+clean-servings: clean-tf-serving clean-onnx-serving
