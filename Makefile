@@ -64,7 +64,8 @@ clean-tf-serving:
 
 .PHONY: clean-onnx-serving
 clean-onnx-serving:
-	docker container rm -f onnx_serving
+	docker container rm -f onnxruntime_serving
+	docker container rm -f caffe2_serving
 
 .PHONY: clean-servings
 clean-servings: clean-tf-serving clean-onnx-serving
