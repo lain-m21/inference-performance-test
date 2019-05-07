@@ -32,7 +32,7 @@ class HealthResource:
 
 app = falcon.API()
 predict_resource = PredictionResource()
-health_resource = PredictionResource()
+health_resource = HealthResource()
 app.add_route('/predict', predict_resource)
 app.add_route('/', health_resource)
 
