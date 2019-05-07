@@ -29,9 +29,9 @@ def main():
     elif args.model_name == 'resnet50':
         model = ResNet50(weights=None, include_top=True, classes=args.num_classes)
     elif args.model_name == 'inception_v3':
-        model = InceptionV3(weights='imagenet', include_top=True, classes=args.num_classes)
+        model = InceptionV3(weights=None, include_top=True, classes=args.num_classes, input_shape=(229, 229, 3))
     elif args.model_name == 'inceptionresnetv2':
-        model = InceptionResNetV2(weights=None, include_top=True, classes=args.num_classes)
+        model = InceptionResNetV2(weights=None, include_top=True, classes=args.num_classes, input_shape=(229, 229, 3))
     elif args.model_name == 'xception':
         model = Xception(weights=None, include_top=True, classes=args.num_classes)
     elif args.model_name == 'densenet121':
