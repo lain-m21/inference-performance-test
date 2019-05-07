@@ -15,7 +15,7 @@ install-vegeta-attack:
 
 .PHONY: build-tf-serving-optimized-image
 build-tf-serving-optimized-image:
-	docker build --pull -t ${TF_SERVING_OPTIMIZED_IMAGE} \
+	docker build --pull -t ${TF_SERVING_OPTIMIZED_IMAGE} --no-cache \
     --build-arg TF_SERVING_VERSION_GIT_BRANCH="${TF_SERVING_VERSION_GIT_BRANCH}" \
     --build-arg TF_SERVING_BUILD_OPTIONS="${TF_SERVING_BUILD_OPTIONS}" \
     -f dockerfiles/Dockerfile.tf_serving.optimized .
