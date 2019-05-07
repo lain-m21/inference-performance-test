@@ -33,7 +33,7 @@ def main():
     elif args.model_name == 'inceptionresnetv2':
         model = InceptionResNetV2(weights=None, include_top=True, classes=args.num_classes, input_shape=(229, 229, 3))
     elif args.model_name == 'xception':
-        model = Xception(weights=None, include_top=True, classes=args.num_classes)
+        model = Xception(weights=None, include_top=True, classes=args.num_classes, input_shape=(229, 229, 3))
     elif args.model_name == 'densenet121':
         model = DenseNet121(weights=None, include_top=True, classes=args.num_classes)
     elif args.model_name == 'densenet169':
