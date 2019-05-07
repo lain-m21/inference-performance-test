@@ -21,7 +21,7 @@ def main():
 
     input_size = model_info['input_size']
     _logger.info('Generate inputs with size: {}'.format(input_size))
-    input_tensor = np.random.rand(input_size).astype(np.float32)
+    input_tensor = np.random.rand(*input_size).astype(np.float32)
     payload = {'input': input_tensor.tolist()}
 
     _logger.info('Save the generated inputs as a payload for the saved onnx model into {}'.format(args.save_path))
