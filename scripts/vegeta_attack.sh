@@ -28,8 +28,10 @@ Content-Type: application/json\n\
 @${PAYLOAD}" > ./tools/target.txt
 
 echo "Warm up serving before vegeta attack"
+for i in `seq 10`
+do
 jq . ${PAYLOAD} | curl -s -o /dev/null -X POST ${ADDRESS} -H "Content-Type: application/json" -d @-
-vegeta attack -rate=5 -duration=1s -targets=./tools/target.txt > ${OUTPUT}
+done
 
 echo "Vegeta attack on ${SERVING_TYPE} ${MODEL_NAME} with rate = ${RATE}, duration = ${DURATION}, output = ${OUTPUT}"
 
