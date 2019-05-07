@@ -28,7 +28,7 @@ def main():
     if args.model_name == 'mobilenetv2':
         model = MobileNetV2(num_classes=args.num_classes)
     else:
-        model = make_model(args.model_name, num_classes=args.num_classes, pretrained=False)
+        model = make_model(args.model_name, num_classes=args.num_classes, pretrained=True)
 
     input_size = (1,) + tuple(model.original_model_info.input_size)
     _logger.info('Create dummy input to the model with the shape {}.'.format(input_size))
