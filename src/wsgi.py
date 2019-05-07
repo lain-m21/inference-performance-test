@@ -1,3 +1,4 @@
+import os
 import argparse
 import logging
 import importlib
@@ -10,10 +11,6 @@ logging.getLogger().setLevel(logging.INFO)
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--framework',
-                        default='sanic',
-                        type='str',
-                        help='REST framework, choose among flask, sanic, japronto, and falcon')
     parser.add_argument('--host',
                         default='0.0.0.0',
                         type=str,
@@ -24,7 +21,9 @@ def main():
                         help='port of predictor')
     args = parser.parse_args()
 
-    module = 'src.{}_app'.format(args.framework)
+    target = os.environ.get('FRAMEWORK', 'sanic')
+
+    module = 'src.{}_app'.format(target)
     app_module = importlib.import_module(module)
 
     app = app_module.app
