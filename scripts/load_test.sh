@@ -14,7 +14,7 @@ if [[ ${SERVING_TYPE} == "tensorflow" ]]; then
     PREFIX="tf"
     WATCH="tensorflow_model_server"
 else
-    PREFIX="onnx"
+    PREFIX=${SERVING_TYPE}
     WATCH="python"
 fi
 
