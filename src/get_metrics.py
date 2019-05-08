@@ -2,8 +2,6 @@ import time
 import psutil
 import argparse
 import threading
-import pickle
-from pathlib import Path
 import numpy as np
 
 
@@ -35,9 +33,7 @@ def main():
                         default='tensorflow_model_server',
                         help='Choose either `tensorflow_model_server` or `python`')
     parser.add_argument('--save-path',
-                        default='metrics_densenet121_tf_5_5.npy')
-    parser.add_argument('--data-dir',
-                        default='./data')
+                        default='./data/metrics_densenet121_tf_5_5.npy')
     args = parser.parse_args()
 
     vegeta_watcher = VegetaWatcher()
@@ -66,8 +62,7 @@ def main():
             break
 
     result = np.array(result)
-    save_path = str(Path(args.data_dir).joinpath('save_path'))
-    np.save(save_path, result)
+    np.save(args.save_path, result)
 
 
 if __name__ == '__main__':
