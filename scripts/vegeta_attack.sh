@@ -2,10 +2,6 @@
 
 # Ex: ./scripts/vegeta_attack.sh tensorflow densenet121 8501 ./data/densenet121_tf_payload.json 10 5
 
-
-TARGET=${3:-tools/target.txt}
-OUTPUT=${4:-data/vegeta_result.bin}
-
 SERVING_TYPE=$1
 MODEL_NAME=${2:-none}
 PORT=$3
