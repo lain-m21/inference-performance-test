@@ -25,8 +25,8 @@ METRICS_DIR=./data/metrics/${MODEL}/${DIR}
 mkdir -p ${VEGETA_DIR}
 mkdir -p ${METRICS_DIR}
 
-OUTPUT_VEGETA="${VEGETA_DIR}/result_${RATE}_${DURATION}"
-OUTPUT_METRICS="${METRICS_DIR}/metrics_${RATE}_${DURATION}.npy"
+OUTPUT_VEGETA="${VEGETA_DIR}/result_rate${RATE}_duration${DURATION}_cpu$(nproc)"
+OUTPUT_METRICS="${METRICS_DIR}/metrics_rate${RATE}_duration${DURATION}_cpu$(nproc).npy"
 
 python -m src.get_metrics --watch ${WATCH} --save-path ${OUTPUT_METRICS} &
 ./scripts/vegeta_attack.sh ${SERVING_TYPE} ${MODEL_NAME} ${PORT} ${PAYLOAD} ${RATE} ${DURATION} ${OUTPUT_VEGETA}
