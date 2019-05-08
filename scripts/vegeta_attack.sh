@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Ex: ./scripts/vegeta_attack.sh tensorflow densenet121 8501 ./data/densenet121_tf_payload.json 10 5
+# Ex: ./scripts/vegeta_attack.sh tensorflow densenet121_tf 8501 ./data/densenet121_tf_payload.json 10 5 ./data/result_densenet121_tf_10_5
 
 SERVING_TYPE=$1
 MODEL_NAME=${2:-none}
@@ -31,7 +31,11 @@ done
 
 echo "Vegeta attack on ${SERVING_TYPE} ${MODEL_NAME} with rate = ${RATE}, duration = ${DURATION}, output = ${OUTPUT}"
 
-vegeta attack -rate=${RATE} -duration=${DURATION}s -targets=./tools/target.txt > ${OUTPUT}
+VEGETA_OUTPUT=${OUTPUT}.bin
+VEGETA_OUTPUT_JSON=${OUTPUT}.json
 
-cat ${OUTPUT} | vegeta report
-cat ${OUTPUT} | vegeta report -type='hist[0,100ms,200ms,300ms,400ms,500ms,1s,2s,3s,4s,5s]'
+vegeta attack -rate=${RATE} -duration=${DURATION}s -targets=./tools/target.txt > ${VEGETA_OUTPUT}
+
+cat ${VEGETA_OUTPUT} | vegeta report
+cat ${VEGETA_OUTPUT} | vegeta report -type='hist[0,100ms,200ms,300ms,400ms,500ms,1s,2s,3s,4s,5s]'
+cat ${VEGETA_OUTPUT} | vegera report -type='json' | jq . > ${VEGETA_OUTPUT_JSON}

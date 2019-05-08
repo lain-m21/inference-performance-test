@@ -18,8 +18,14 @@ else
     WATCH="python"
 fi
 
-OUTPUT_VEGETA="./data/result_${MODEL}_${PREFIX}_${RATE}_${DURATION}.bin"
-OUTPUT_METRICS="./data/metrics_${MODEL}_${PREFIX}_${RATE}_${DURATION}.npy"
+VEGETA_DIR=./data/results/${MODEL}
+METRICS_DIR=./data/metrics/${MODEL}
+
+mkdir -p ${VEGETA_DIR}
+mkdir -p ${METRICS_DIR}
+
+OUTPUT_VEGETA="${VEGETA_DIR}/${PREFIX}_${RATE}_${DURATION}"
+OUTPUT_METRICS="${METRICS_DIR}/${PREFIX}_${RATE}_${DURATION}.npy"
 
 python -m src.get_metrics --watch ${WATCH} --save-path ${OUTPUT_METRICS} &
 ./scripts/vegeta_attack.sh ${SERVING_TYPE} ${MODEL_NAME} ${PORT} ${PAYLOAD} ${RATE} ${DURATION} ${OUTPUT_VEGETA}
