@@ -3,7 +3,7 @@
 # Ex: ./scripts/load_test.sh tensorflow sanic densenet121_tf densenet121 8501 ./data/densenet121_tf_payload.json 10 5
 
 SERVING_TYPE=$1
-FRAMEWORK=${2:-sanic}
+FRAMEWORK=$2
 MODEL_NAME=$3
 MODEL=$4
 PORT=$5

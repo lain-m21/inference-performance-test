@@ -38,4 +38,4 @@ vegeta attack -rate=${RATE} -duration=${DURATION}s -targets=./tools/target.txt >
 
 cat ${VEGETA_OUTPUT} | vegeta report
 cat ${VEGETA_OUTPUT} | vegeta report -type='hist[0,100ms,200ms,300ms,400ms,500ms,1s,2s,3s,4s,5s]'
-cat ${VEGETA_OUTPUT} | vegera report -type='json' | jq . > ${VEGETA_OUTPUT_JSON}
+cat ${VEGETA_OUTPUT} | vegeta report -type='json' | jq . > ${VEGETA_OUTPUT_JSON}
