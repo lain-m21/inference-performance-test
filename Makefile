@@ -6,6 +6,7 @@ TF_SERVING_OPTIMIZED_IMAGE=tmp/tensorflow-serving-devel:0.0.1
 ONNX_SERVING_IMAGE=tmp/onnx-serving:0.0.1
 
 MODEL=densenet121
+FRAMEWORK=sanic
 RATE=10
 DURATION=5
 
@@ -48,21 +49,21 @@ load-test-tf:
 load-test-onnx:
 	python -m src.preparation.prepare_onnx_model --model-name ${MODEL} --save-name ${MODEL}_onnx
 
-	./scripts/run_onnx_serving.sh sanic onnxruntime ${MODEL}_onnx_info.json 18501
+	./scripts/run_onnx_serving.sh ${FRAMEWORK} onnxruntime ${MODEL}_onnx_info.json 18501
 	python -m src.preparation.prepare_onnx_inputs --model-info-path ${MODEL}_onnx_info.json --save-path ${MODEL}_onnx_payload.json
 
-	./scripts/load_test.sh onnxruntime ${MODEL}_onnx ${MODEL} 18501 ./data/${MODEL}_onnx_payload.json 5 5
-	./scripts/load_test.sh onnxruntime ${MODEL}_onnx ${MODEL} 18501 ./data/${MODEL}_onnx_payload.json 10 5
-	./scripts/load_test.sh onnxruntime ${MODEL}_onnx ${MODEL} 18501 ./data/${MODEL}_onnx_payload.json 20 5
-	./scripts/load_test.sh onnxruntime ${MODEL}_onnx ${MODEL} 18501 ./data/${MODEL}_onnx_payload.json 30 5
+	./scripts/load_test.sh onnxruntime ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 18501 ./data/${MODEL}_onnx_payload.json 5 5
+	./scripts/load_test.sh onnxruntime ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 18501 ./data/${MODEL}_onnx_payload.json 10 5
+	./scripts/load_test.sh onnxruntime ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 18501 ./data/${MODEL}_onnx_payload.json 20 5
+	./scripts/load_test.sh onnxruntime ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 18501 ./data/${MODEL}_onnx_payload.json 30 5
 
-	./scripts/run_onnx_serving.sh sanic caffe2 ${MODEL}_onnx_info.json 28501
+	./scripts/run_onnx_serving.sh ${FRAMEWORK} caffe2 ${MODEL}_onnx_info.json 28501
 	python -m src.preparation.prepare_onnx_inputs --model-info-path ${MODEL}_onnx_info.json --save-path ${MODEL}_onnx_payload.json
 
-	./scripts/load_test.sh caffe2 ${MODEL}_onnx ${MODEL} 28501 ./data/${MODEL}_onnx_payload.json 5 5
-	./scripts/load_test.sh caffe2 ${MODEL}_onnx ${MODEL} 28501 ./data/${MODEL}_onnx_payload.json 10 5
-	./scripts/load_test.sh caffe2 ${MODEL}_onnx ${MODEL} 28501 ./data/${MODEL}_onnx_payload.json 20 5
-	./scripts/load_test.sh caffe2 ${MODEL}_onnx ${MODEL} 28501 ./data/${MODEL}_onnx_payload.json 30 5
+	./scripts/load_test.sh caffe2 ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 28501 ./data/${MODEL}_onnx_payload.json 5 5
+	./scripts/load_test.sh caffe2 ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 28501 ./data/${MODEL}_onnx_payload.json 10 5
+	./scripts/load_test.sh caffe2 ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 28501 ./data/${MODEL}_onnx_payload.json 20 5
+	./scripts/load_test.sh caffe2 ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 28501 ./data/${MODEL}_onnx_payload.json 30 5
 
 .PHONY: clean-tf-serving
 clean-tf-serving:

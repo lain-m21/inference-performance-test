@@ -1,31 +1,32 @@
 #!/bin/bash
 
-# Ex: ./scripts/load_test.sh tensorflow densenet121_tf densenet121 8501 ./data/densenet121_tf_payload.json 10 5
+# Ex: ./scripts/load_test.sh tensorflow sanic densenet121_tf densenet121 8501 ./data/densenet121_tf_payload.json 10 5
 
 SERVING_TYPE=$1
-MODEL_NAME=$2
-MODEL=$3
-PORT=$4
-PAYLOAD=$5
-RATE=$6
-DURATION=$7
+FRAMEWORK=$2
+MODEL_NAME=$3
+MODEL=$4
+PORT=$5
+PAYLOAD=$6
+RATE=$7
+DURATION=$8
 
 if [[ ${SERVING_TYPE} == "tensorflow" ]]; then
-    PREFIX="tf"
+    DIR="tensorflow"
     WATCH="tensorflow_model_server"
 else
-    PREFIX=${SERVING_TYPE}
+    DIR="${SERVING_TYPE}_${FRAMEWORK}"
     WATCH="python"
 fi
 
-VEGETA_DIR=./data/results/${MODEL}
-METRICS_DIR=./data/metrics/${MODEL}
+VEGETA_DIR=./data/results/${MODEL}/${DIR}
+METRICS_DIR=./data/metrics/${MODEL}/${DIR}
 
 mkdir -p ${VEGETA_DIR}
 mkdir -p ${METRICS_DIR}
 
-OUTPUT_VEGETA="${VEGETA_DIR}/${PREFIX}_${RATE}_${DURATION}"
-OUTPUT_METRICS="${METRICS_DIR}/${PREFIX}_${RATE}_${DURATION}.npy"
+OUTPUT_VEGETA="${VEGETA_DIR}/result_${RATE}_${DURATION}"
+OUTPUT_METRICS="${METRICS_DIR}/metrics_${RATE}_${DURATION}.npy"
 
 python -m src.get_metrics --watch ${WATCH} --save-path ${OUTPUT_METRICS} &
 ./scripts/vegeta_attack.sh ${SERVING_TYPE} ${MODEL_NAME} ${PORT} ${PAYLOAD} ${RATE} ${DURATION} ${OUTPUT_VEGETA}
