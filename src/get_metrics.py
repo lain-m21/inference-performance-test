@@ -9,10 +9,11 @@ class VegetaWatcher(threading.Thread):
     def __init__(self):
         super(VegetaWatcher, self).__init__()
         self.vegeta_running = False
+        self.is_running = True
 
     def run(self):
         p = None
-        while True:
+        while self.is_running:
             time.sleep(0.1)
             if p is None:
                 p_list = [p for p in psutil.process_iter() if 'vegeta' in set(p.cmdline())]
@@ -49,9 +50,9 @@ def main():
         if flag:
             # get cpu metrics
             if args.watch == 'tensorflow_model_server':
-                p = [p for p in psutil.process_iter() if 'tensorflow_model_server' in set(p.cmdline())][-1]
+                p = [p for p in psutil.process_iter() if 'tensorflow_model_server' in set(p.cmdline())][0]
             elif args.watch == 'python':
-                p = [p for p in psutil.process_iter() if 'python' in set(p.cmdline())][-1]
+                p = [p for p in psutil.process_iter() if 'python -m src.wsgi' in p.cmdline()][0]
             else:
                 raise ValueError('The watch is invalid')
 
@@ -60,6 +61,7 @@ def main():
             result.append([cpu_percent, cpu_num])
 
         if flag and not vegeta_watcher.vegeta_running:
+            vegeta_watcher.is_running = False
             break
 
     result = np.array(result)
