@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Ex: ./scripts/load_test.sh tensorflow densenet121_tf densenet121 8501 ./data/densenet121_tf_payload.json 10 5
+
 SERVING_TYPE=$1
 MODEL_NAME=$2
 MODEL=$3
