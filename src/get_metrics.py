@@ -42,6 +42,7 @@ def main():
     result = []
     flag = False
     while True:
+        time.sleep(0.1)
         if not flag and vegeta_watcher.vegeta_running:
             flag = True
 
