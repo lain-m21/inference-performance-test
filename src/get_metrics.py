@@ -59,7 +59,8 @@ def main():
                 raise ValueError('The watch is invalid')
 
             cpu_percent = p.cpu_percent()
-            result.append(cpu_percent)
+            cpu_num = p.cpu_num()
+            result.append([cpu_percent, cpu_num])
 
         if flag and not vegeta_watcher.vegeta_running:
             break
