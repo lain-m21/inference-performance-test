@@ -40,10 +40,10 @@ load-test-tf:
 	./scripts/run_tf_serving_optimized.sh ${MODEL}_tf 8500 8501
 	python -m src.preparation.prepare_tf_inputs --model-info-path ${MODEL}_tf_info.json --save-path ${MODEL}_tf_payload.json
 
-	./scripts/load_test.sh tensorflow ${MODEL}_tf ${MODEL} 8501 ./data/${MODEL}_tf_payload.json 5 5
-	./scripts/load_test.sh tensorflow ${MODEL}_tf ${MODEL} 8501 ./data/${MODEL}_tf_payload.json 10 5
-	./scripts/load_test.sh tensorflow ${MODEL}_tf ${MODEL} 8501 ./data/${MODEL}_tf_payload.json 20 5
-	./scripts/load_test.sh tensorflow ${MODEL}_tf ${MODEL} 8501 ./data/${MODEL}_tf_payload.json 30 5
+	./scripts/load_test.sh tensorflow tensorflow ${MODEL}_tf ${MODEL} 8501 ./data/${MODEL}_tf_payload.json 5 5
+	./scripts/load_test.sh tensorflow tensorflow ${MODEL}_tf ${MODEL} 8501 ./data/${MODEL}_tf_payload.json 10 5
+	./scripts/load_test.sh tensorflow tensorflow ${MODEL}_tf ${MODEL} 8501 ./data/${MODEL}_tf_payload.json 20 5
+	./scripts/load_test.sh tensorflow tensorflow ${MODEL}_tf ${MODEL} 8501 ./data/${MODEL}_tf_payload.json 30 5
 
 .PHONY: load-test-onnx
 load-test-onnx:
