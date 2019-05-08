@@ -4,6 +4,7 @@ import argparse
 import threading
 import pickle
 from pathlib import Path
+import numpy as np
 
 
 class VegetaWatcher(threading.Thread):
@@ -33,14 +34,16 @@ def main():
     parser.add_argument('--watch',
                         default='tensorflow_model_server',
                         help='Choose either `tensorflow_model_server` or `python`')
-    parser.add_argument('--save-name',
-                        default='metrics_densenet121_tf.pkl')
+    parser.add_argument('--save-path',
+                        default='metrics_densenet121_tf_5_5.npy')
     parser.add_argument('--data-dir',
                         default='./data')
     args = parser.parse_args()
 
     vegeta_watcher = VegetaWatcher()
     vegeta_watcher.start()
+
+    result = []
     flag = False
     while True:
         if not flag and vegeta_watcher.vegeta_running:
@@ -54,11 +57,16 @@ def main():
                 p = [p for p in psutil.process_iter() if 'python' in set(p.cmdline())][-1]
             else:
                 raise ValueError('The watch is invalid')
+
             cpu_percent = p.cpu_percent()
+            result.append(cpu_percent)
 
         if flag and not vegeta_watcher.vegeta_running:
-            # dump cpu metrics
-            flag = False
+            break
+
+    result = np.array(result)
+    save_path = str(Path(args.data_dir).joinpath('save_path'))
+    np.save(save_path, result)
 
 
 if __name__ == '__main__':
