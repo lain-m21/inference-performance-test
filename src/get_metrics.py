@@ -16,10 +16,13 @@ class VegetaWatcher(threading.Thread):
         while self.is_running:
             time.sleep(0.1)
             if p is None:
-                p_list = [p for p in psutil.process_iter() if 'vegeta' in set(p.cmdline())]
-                if len(p_list) > 0:
-                    p = p_list[-1]
-                    self.vegeta_running = True
+                try:
+                    p_list = [p for p in psutil.process_iter() if 'vegeta' in set(p.cmdline())]
+                    if len(p_list) > 0:
+                        p = p_list[-1]
+                        self.vegeta_running = True
+                except:
+                    pass
             if p is not None:
                 try:
                     p.cpu_percent()
