@@ -24,7 +24,7 @@ async def predict(request):
 
 
 @app.route('/', methods=['GET'])
-def health(request):
+async def health(request):
     logger.info("[HEALTH] GET")
     return sanic_json({'status': 'OK'})
 
