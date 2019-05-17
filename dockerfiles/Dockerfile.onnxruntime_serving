@@ -1,7 +1,5 @@
 FROM python:3.6.8
 
-ENV LC_ALL C.UTF-8
-ENV LANG   C.UTF-8
 ENV CMAKE_VERSION 3.14.4
 
 RUN apt-get update && apt-get install -y wget git libgomp1
