@@ -1,0 +1,43 @@
+FROM python:3.6.8
+
+ENV LC_ALL C.UTF-8
+ENV LANG   C.UTF-8
+ENV CMAKE_VERSION 3.14.4
+
+RUN apt-get update && apt-get install -y wget git libgomp1
+
+# install cmake manually to build onnxruntime
+RUN mkdir -p /src
+WORKDIR src
+RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz
+RUN tar -xvzf cmake-${CMAKE_VERSION}.tar.gz && \
+    cd cmake-${CMAKE_VERSION} && \
+    ./bootstrap && \
+    make -j$(nproc) && \
+    make install
+
+# build onnxruntime with server support
+RUN git clone --recursive https://github.com/Microsoft/onnxruntime
+WORKDIR onnxruntime
+RUN ./build.sh --config RelWithDebInfo --build_server --use_openmp --parallel
+
+# Make onnxruntime_server available
+RUN cp /src/onnxruntime/build/Linux/RelWithDebInfo/onnxruntime_server /usr/local/bin/
+
+# REST
+EXPOSE 8001
+
+# Set where models should be stored in the container
+ENV MODEL_BASE_PATH=/models
+RUN mkdir -p ${MODEL_BASE_PATH}
+
+# The only required piece is the model name in order to differentiate endpoints
+ENV MODEL_NAME=model
+ENV NUM_HTTP_THREADS=$(nproc)
+
+RUN echo '#!/bin/bash \n\n\
+onnxruntime_server --port=8500 --http_port=8001 --num_http_threads=${NUM_HTTP_THREADS} \
+--model_path=${MODEL_BASE_PATH}/${MODEL_NAME}' > /usr/bin/onnxruntime_serving_entrypoint.sh \
+&& chmod +x /usr/bin/onnxruntime_serving_entrypoint.sh
+
+ENTRYPOINT ["/usr/bin/onnxruntime_serving_entrypoint.sh"]
