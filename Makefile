@@ -76,7 +76,7 @@ load-test-onnx:
 load-test-onnxruntime:
 	python -m src.preparation.prepare_onnx_model --model-name ${MODEL} --save-name ${MODEL}_onnx
 
-	./scripts/run_onnxruntime_serving.sh ${MODEL}_onnx 38501
+	./scripts/run_onnxruntime_serving.sh ${MODEL}_onnx.onnx 38501
 	python -m src.preparation.prepare_onnxruntime_inputs --model-info-path ${MODEL}_onnx_info.json --save-path ${MODEL}_onnxruntime_payload.pb
 
 	./scripts/load_test.sh onnxruntime ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 38501 ./data/${MODEL}_onnxruntime_payload.pb 5 5

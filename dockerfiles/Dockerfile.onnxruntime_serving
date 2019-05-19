@@ -32,12 +32,12 @@ ENV MODEL_BASE_PATH=/models
 RUN mkdir -p ${MODEL_BASE_PATH}
 
 # The only required piece is the model name in order to differentiate endpoints
-ENV MODEL_NAME=model
+ENV MODEL_PATH=model.onnx
 ENV NUM_HTTP_THREADS=8
 
 RUN echo '#!/bin/bash \n\n\
 onnxruntime_server --http_port=8001 --num_http_threads=${NUM_HTTP_THREADS} \
---model_path=${MODEL_BASE_PATH}/${MODEL_NAME}' > /usr/bin/onnxruntime_serving_entrypoint.sh \
+--model_path=${MODEL_BASE_PATH}/${MODEL_PATH}' > /usr/bin/onnxruntime_serving_entrypoint.sh \
 && chmod +x /usr/bin/onnxruntime_serving_entrypoint.sh
 
 ENTRYPOINT ["/usr/bin/onnxruntime_serving_entrypoint.sh"]
