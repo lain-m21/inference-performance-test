@@ -23,7 +23,7 @@ def main():
     _logger.info('Load model info from {}'.format(args.model_info_path))
     model_info = json.load(data_dir.joinpath(args.model_info_path).open('r'))
 
-    model = onnx.load(str(Path(args.data_dir).joinpath(model_info['model_path'])))
+    model = onnx.load(model_info['model_path'])
     input_name = model.get_inputs()[0].name
     output_name = model.get_outputs()[0].name
 
