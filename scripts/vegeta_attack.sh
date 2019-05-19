@@ -12,9 +12,12 @@ OUTPUT=${7:-data/vegeta_result.bin}
 
 TF_ADDRESS="http://localhost:${PORT}/v1/models/${MODEL_NAME}:predict"
 ONNX_ADDRESS="http://localhost:${PORT}/predict"
+ONNXRUNTIME_ADDRESS="http://localhost:${PORT}/v1/models/${MODEL_NAME}/versions/1:predict"
 
 if [[ ${SERVING_TYPE} = "tensorflow" ]]; then
     ADDRESS=${TF_ADDRESS}
+else if [[ ${SERVING_TYPE} = "onnxruntime" ]]; then
+    ADDRESS=${ONNXRUNTIME_ADDRESS}
 else
     ADDRESS=${ONNX_ADDRESS}
 fi
