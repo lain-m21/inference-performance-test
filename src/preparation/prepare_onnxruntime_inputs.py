@@ -41,7 +41,7 @@ def main():
     payload = predict_request.SerializeToString()
 
     _logger.info('Save the generated inputs as a payload for the saved onnx model into {}'.format(args.save_path))
-    with data_dir.joinpath(args.save_path).open('w') as f:
+    with data_dir.joinpath(args.save_path).open('wb') as f:
         f.write(payload)
 
 
