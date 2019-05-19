@@ -36,7 +36,7 @@ ENV MODEL_NAME=model
 ENV NUM_HTTP_THREADS=$(nproc)
 
 RUN echo '#!/bin/bash \n\n\
-onnxruntime_server --port=8500 --http_port=8001 --num_http_threads=${NUM_HTTP_THREADS} \
+onnxruntime_server --http_port=8001 --num_http_threads=${NUM_HTTP_THREADS} \
 --model_path=${MODEL_BASE_PATH}/${MODEL_NAME}' > /usr/bin/onnxruntime_serving_entrypoint.sh \
 && chmod +x /usr/bin/onnxruntime_serving_entrypoint.sh
 
