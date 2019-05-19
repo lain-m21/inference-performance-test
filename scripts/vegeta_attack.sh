@@ -16,7 +16,7 @@ ONNXRUNTIME_ADDRESS="http://localhost:${PORT}/v1/models/${MODEL_NAME}/versions/1
 
 if [[ ${SERVING_TYPE} = "tensorflow" ]]; then
     ADDRESS=${TF_ADDRESS}
-else if [[ ${SERVING_TYPE} = "onnxruntime" ]]; then
+elif [[ ${SERVING_TYPE} = "onnxruntime" ]]; then
     ADDRESS=${ONNXRUNTIME_ADDRESS}
 else
     ADDRESS=${ONNX_ADDRESS}
