@@ -19,6 +19,17 @@ else
     ADDRESS=${ONNX_ADDRESS}
 fi
 
+if [[ ${SERVING_TYPE} = "onnxruntime" ]]; then
+    echo -e "POST ${ADDRESS}\n\
+    Content-Type: application/octet-stream\n\
+    Accept: application/octet-stream\n\
+    @${PAYLOAD}" > ./tools/target.txt
+else
+    echo -e "POST ${ADDRESS}\n\
+    Content-Type: application/json\n\
+    @${PAYLOAD}" > ./tools/target.txt
+fi
+
 echo -e "POST ${ADDRESS}\n\
 Content-Type: application/json\n\
 @${PAYLOAD}" > ./tools/target.txt
@@ -26,7 +37,11 @@ Content-Type: application/json\n\
 echo "Warm up serving before vegeta attack"
 for i in `seq 10`
 do
-jq . ${PAYLOAD} | curl -s -o /dev/null -X POST ${ADDRESS} -H "Content-Type: application/json" -d @-
+if [[ ${SERVING_TYPE} = "onnxruntime" ]]; then
+    curl -s -o /dev/null -X POST ${ADDRESS} -H "Content-Type: application/octet-stream" -H "Accept: application/octet-stream" -d @${PAYLOAD}
+else
+    curl -s -o /dev/null -X POST ${ADDRESS} -H "Content-Type: application/json" -d @${PAYLOAD}
+fi
 done
 
 echo "Vegeta attack on ${SERVING_TYPE} ${MODEL_NAME} with rate = ${RATE}, duration = ${DURATION}, output = ${OUTPUT}"
