@@ -33,15 +33,11 @@ else
     @${PAYLOAD}" > ./tools/target.txt
 fi
 
-echo -e "POST ${ADDRESS}\n\
-Content-Type: application/json\n\
-@${PAYLOAD}" > ./tools/target.txt
-
 echo "Warm up serving before vegeta attack"
 for i in `seq 10`
 do
 if [[ ${SERVING_TYPE} = "onnxruntime" ]]; then
-    curl -s -o /dev/null -X POST ${ADDRESS} -H "Content-Type: application/octet-stream" -H "Accept: application/octet-stream" -d @${PAYLOAD}
+    curl -s -o /dev/null -X POST ${ADDRESS} -H "Content-Type: application/octet-stream" -H "Accept: application/octet-stream" --data-binary @${PAYLOAD}
 else
     curl -s -o /dev/null -X POST ${ADDRESS} -H "Content-Type: application/json" -d @${PAYLOAD}
 fi
