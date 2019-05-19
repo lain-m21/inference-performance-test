@@ -5,6 +5,8 @@ TF_SERVING_OPTIMIZED_IMAGE=tmp/tensorflow-serving-devel:0.0.1
 
 ONNX_SERVING_IMAGE=tmp/onnx-serving:0.0.1
 
+ONNXRUNTIME_SERVING_IMAGE=tmp/onnxruntime-serving:0.0.1
+
 MODEL=densenet121
 FRAMEWORK=sanic
 RATE=10
@@ -30,8 +32,13 @@ build-onnx-image:
 	docker build --pull -t ${ONNX_SERVING_IMAGE} \
 	-f dockerfiles/Dockerfile.onnx_serving .
 
+.PHONY: build-onnxruntime-image
+build-onnxruntime-image:
+	docker build --pull -t ${ONNXRUNTIME_SERVING_IMAGE} \
+	-f dockerfiles/Dockerfile.onnxruntime_serving .
+
 .PHONY: builld-all
-build-all: build-tf-serving-optimized-image build-onnx-image
+build-all: build-tf-serving-optimized-image build-onnx-image build-onnxruntime-image
 
 .PHONY: load-test-tf
 load-test-tf:
@@ -64,6 +71,18 @@ load-test-onnx:
 	./scripts/load_test.sh caffe2 ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 28501 ./data/${MODEL}_onnx_payload.json 10 5
 	./scripts/load_test.sh caffe2 ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 28501 ./data/${MODEL}_onnx_payload.json 20 5
 	./scripts/load_test.sh caffe2 ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 28501 ./data/${MODEL}_onnx_payload.json 30 5
+
+.PHONY: load-test-onnxruntime
+load-test-onnxruntime:
+	python -m src.preparation.prepare_onnx_model --model-name ${MODEL} --save-name ${MODEL}_onnx
+
+	./scripts/run_onnxruntime_serving.sh ${MODEL}_onnx 38501
+	python -m src.preparation.prepare_onnxruntime_inputs --model-info-path ${MODEL}_onnx_info.json --save-path ${MODEL}_onnxruntime_payload.pb
+
+	./scripts/load_test.sh onnxruntime ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 38501 ./data/${MODEL}_onnxruntime_payload.pb 5 5
+	./scripts/load_test.sh onnxruntime ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 38501 ./data/${MODEL}_onnxruntime_payload.pb 10 5
+	./scripts/load_test.sh onnxruntime ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 38501 ./data/${MODEL}_onnxruntime_payload.pb 20 5
+	./scripts/load_test.sh onnxruntime ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 38501 ./data/${MODEL}_onnxruntime_payload.pb 30 5
 
 .PHONY: clean-tf-serving
 clean-tf-serving:
