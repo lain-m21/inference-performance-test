@@ -79,10 +79,10 @@ load-test-onnxruntime:
 	./scripts/run_onnxruntime_serving.sh ${MODEL}_onnx.onnx 38501
 	python -m src.preparation.prepare_onnxruntime_inputs --model-info-path ${MODEL}_onnx_info.json --save-path ${MODEL}_onnxruntime_payload.pb
 
-	./scripts/load_test.sh onnxruntime ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 38501 ./data/${MODEL}_onnxruntime_payload.pb 5 5
-	./scripts/load_test.sh onnxruntime ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 38501 ./data/${MODEL}_onnxruntime_payload.pb 10 5
-	./scripts/load_test.sh onnxruntime ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 38501 ./data/${MODEL}_onnxruntime_payload.pb 20 5
-	./scripts/load_test.sh onnxruntime ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 38501 ./data/${MODEL}_onnxruntime_payload.pb 30 5
+	./scripts/load_test.sh onnxruntime_server ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 38501 ./data/${MODEL}_onnxruntime_payload.pb 5 5
+	./scripts/load_test.sh onnxruntime_server ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 38501 ./data/${MODEL}_onnxruntime_payload.pb 10 5
+	./scripts/load_test.sh onnxruntime_server ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 38501 ./data/${MODEL}_onnxruntime_payload.pb 20 5
+	./scripts/load_test.sh onnxruntime_server ${FRAMEWORK} ${MODEL}_onnx ${MODEL} 38501 ./data/${MODEL}_onnxruntime_payload.pb 30 5
 
 .PHONY: clean-tf-serving
 clean-tf-serving:
@@ -93,8 +93,12 @@ clean-onnx-serving:
 	docker container rm -f onnxruntime_serving
 	docker container rm -f caffe2_serving
 
+.PHONY: clean-onnxruntime-serving
+clean-onnxruntime-serving:
+	docker container rm -f onnxruntime_serving
+
 .PHONY: clean-all-servings
-clean-all-servings: clean-tf-serving clean-onnx-serving
+clean-all-servings: clean-tf-serving clean-onnxruntime-serving
 
 .PHONY: clean-tf-outputs
 clean-tf-outputs:
@@ -108,4 +112,4 @@ clean-onnx-outputs:
 clean-all-outputs: clean-tf-outputs clean-onnx-outputs
 
 .PHONY: load-test-and-clean
-load-test-and-clean: load-test-tf load-test-onnx clean-all-servings clean-all-outputs
+load-test-and-clean: load-test-tf load-test-onnxruntime clean-all-servings clean-all-outputs
