@@ -16,13 +16,13 @@ ONNXRUNTIME_ADDRESS="http://localhost:${PORT}/v1/models/${MODEL_NAME}/versions/1
 
 if [[ ${SERVING_TYPE} = "tensorflow" ]]; then
     ADDRESS=${TF_ADDRESS}
-elif [[ ${SERVING_TYPE} = "onnxruntime" ]]; then
+elif [[ ${SERVING_TYPE} = "onnxruntime_server" ]]; then
     ADDRESS=${ONNXRUNTIME_ADDRESS}
 else
     ADDRESS=${ONNX_ADDRESS}
 fi
 
-if [[ ${SERVING_TYPE} = "onnxruntime" ]]; then
+if [[ ${SERVING_TYPE} = "onnxruntime_server" ]]; then
     echo -e "POST ${ADDRESS}\n\
     Content-Type: application/octet-stream\n\
     Accept: application/octet-stream\n\
@@ -36,7 +36,7 @@ fi
 echo "Warm up serving before vegeta attack"
 for i in `seq 10`
 do
-if [[ ${SERVING_TYPE} = "onnxruntime" ]]; then
+if [[ ${SERVING_TYPE} = "onnxruntime_server" ]]; then
     curl -s -o /dev/null -X POST ${ADDRESS} -H "Content-Type: application/octet-stream" -H "Accept: application/octet-stream" --data-binary @${PAYLOAD}
 else
     curl -s -o /dev/null -X POST ${ADDRESS} -H "Content-Type: application/json" -d @${PAYLOAD}
