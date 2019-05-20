@@ -56,6 +56,8 @@ def main():
                 p = [p for p in psutil.process_iter() if 'tensorflow_model_server' in set(p.cmdline())][0]
             elif args.watch == 'python':
                 p = [p for p in psutil.process_iter() if 'python -m src.wsgi' in ' '.join(p.cmdline())][0]
+            elif args.watch == 'onnxruntime_server':
+                p = [p for p in psutil.process_iter() if 'onnxruntime_server' in ' '.join(p.cmdline())][0]
             else:
                 raise ValueError('The watch is invalid')
 
