@@ -6,7 +6,7 @@ import numpy as np
 import onnxruntime
 from onnx import numpy_helper
 
-from src.utils import predict_pb2, onnx_ml_pb2
+from src.utils import onnx_predict_pb2, onnx_ml_pb2
 
 
 _logger = logging.getLogger(__name__)
@@ -34,7 +34,7 @@ def main():
     t = onnx_ml_pb2.TensorProto()
     t.ParseFromString(d.SerializeToString())
 
-    predict_request = predict_pb2.PredictRequest()
+    predict_request = onnx_predict_pb2.PredictRequest()
     predict_request.inputs[input_name].CopyFrom(t)
     predict_request.output_filter.append(output_name)
 
