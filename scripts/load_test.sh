@@ -14,8 +14,8 @@ DURATION=$8
 if [[ ${SERVING_TYPE} == "tensorflow" ]]; then
     DIR="tensorflow"
     WATCH="tensorflow_model_server"
-elif [[ ${SERVING_TYPE} == "onnxruntime" ]]; then
-    DIR="onnxruntime"
+elif [[ ${SERVING_TYPE} == "onnxruntime_server" ]]; then
+    DIR="onnxruntime_server"
     WATCH="onnxruntime_server"
 else
     DIR="${SERVING_TYPE}_${FRAMEWORK}"
