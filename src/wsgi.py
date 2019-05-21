@@ -8,6 +8,13 @@ logger = logging.getLogger(__name__)
 logging.basicConfig()
 logging.getLogger().setLevel(logging.INFO)
 
+serving_type = os.environ.get('SERVING_TYPE', 'onnxruntime')
+
+module = 'src.{}_app'.format(serving_type)
+app_module = importlib.import_module(module)
+
+app = app_module.app
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -16,17 +23,11 @@ def main():
                         type=str,
                         help='host of predictor')
     parser.add_argument('--port',
-                        default=8501,
+                        default=9000,
                         type=int,
                         help='port of predictor')
     args = parser.parse_args()
 
-    target = os.environ.get('FRAMEWORK', 'sanic')
-
-    module = 'src.{}_app'.format(target)
-    app_module = importlib.import_module(module)
-
-    app = app_module.app
     app.run(host=args.host, port=args.port)
 
 

@@ -16,7 +16,7 @@ def main():
                         type=str,
                         help='host of predictor')
     parser.add_argument('--port',
-                        default=9000,
+                        default=8501,
                         type=int,
                         help='port of predictor')
     args = parser.parse_args()
