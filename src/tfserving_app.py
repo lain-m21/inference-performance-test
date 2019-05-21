@@ -1,10 +1,10 @@
 import os
 import logging
 import importlib
-import grpc
-from tensorflow_serving.apis import prediction_service_pb2_grpc
 from sanic import Sanic
 from sanic.response import json as sanic_json
+import grpc
+from tensorflow_serving.apis import prediction_service_pb2_grpc
 
 
 logger = logging.getLogger(__name__)
