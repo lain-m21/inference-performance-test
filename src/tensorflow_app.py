@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 app = Sanic()
 target = os.environ.get('TARGET', 'template')
-endpoint = os.environ.get('ENDPOINT', 'localhost:9000')
+endpoint = os.environ.get('ENDPOINT', 'localhost:8500')
 
 channel = grpc.insecure_channel(endpoint)
 stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)

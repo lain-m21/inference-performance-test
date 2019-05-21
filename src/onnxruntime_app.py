@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 app = Sanic()
 target = os.environ.get('TARGET', 'template')
-endpoint = os.environ.get('ENDPOINT', 'http://localhost:9000/v1/models/mymodel/versions/1:predict')
+endpoint = os.environ.get('ENDPOINT', 'http://localhost:8001/v1/models/mymodel/versions/1:predict')
 
 request_headers = {
     'Content-Type': 'application/octet-stream',
