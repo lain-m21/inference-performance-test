@@ -2,6 +2,7 @@ TF_SERVING_VERSION_GIT_BRANCH=r1.13
 TF_SERVING_BUILD_OPTIONS=--copt=-mavx --copt=-mavx2 --copt=-mfma --copt=-msse4.1 --copt=-msse4.2 --copt=-O3
 TF_SERVING_IMAGE=tensorflow/serving:latest
 TF_SERVING_OPTIMIZED_IMAGE=tmp/tensorflow-serving-devel:0.0.1
+TF_SERVING_MKL_IMAGE=tmp/tensorflow-serving-mkl:0.0.1
 
 ONNX_SERVING_IMAGE=tmp/onnx-serving:0.0.1
 
@@ -26,6 +27,11 @@ build-tf-serving-optimized-image:
     --build-arg TF_SERVING_VERSION_GIT_BRANCH="${TF_SERVING_VERSION_GIT_BRANCH}" \
     --build-arg TF_SERVING_BUILD_OPTIONS="${TF_SERVING_BUILD_OPTIONS}" \
     -f dockerfiles/Dockerfile.tf_serving.optimized .
+
+.PHONY: build-tf-serving-mkl-image
+build-tf-serving-mkl-image:
+	docker build --pull -t ${TF_SERVING_MKL_IMAGE} \
+	-f dockerfiles/Dockerfile.tf_serving.mkl .
 
 .PHONY: build-onnx-image
 build-onnx-image:
