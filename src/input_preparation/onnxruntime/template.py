@@ -22,7 +22,7 @@ def prepare_request(request: Request) -> predict_pb2.PredictRequest:
     """
 
     # Prepare input tensor proto from raw numpy array
-    raw = np.random.rand(*request.json['input_size']).astype(np.float32)  # (1, 224, 224, 3)
+    raw = np.random.rand(*request.json['input_size']).astype(np.float32)  # (1, 224, 224, 3) or (1, 299, 299, 3)
     tensor_proto = numpy_helper.from_array(raw)  # actually faster than manually initialize onnx_ml_pb2.TensorProto
     t = onnx_ml_pb2.TensorProto()
     t.ParseFromString(tensor_proto.SerializeToString())
