@@ -22,7 +22,7 @@ def prepare_request(request: Request) -> predict_pb2.PredictRequest:
     """
 
     # Prepare input tensor proto from raw numpy array
-    raw = np.random.rand(*request.json['input_size']).astype(np.float32)  # (224, 224, 3)
+    raw = np.random.rand(*request.json['input_size']).astype(np.float32)  # (224, 224, 3) or (299, 299, 3)
     tensor = make_tensor_proto(raw, shape=[1] + list(raw.shape))
 
     # Initialize PredictRequest instance
