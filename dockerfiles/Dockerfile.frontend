@@ -1,0 +1,20 @@
+FROM python:3.6.8
+
+RUN  mkdir -p /workspace
+WORKDIR /workspace
+
+COPY src ./src
+COPY requirements_frontend.txt ./requirements.txt
+
+RUN apt-get update && apt-get install -y libev-dev
+RUN pip install -r requirements.txt
+
+# REST
+EXPOSE 9000
+
+ENV NUM_PROCESSES=50
+
+RUN echo "#!/bin/bash \n\n uwsgi --socket 0.0.0.0:9000 --protocol http -w src.wsgi:app -p ${NUM_PROCESSES}" \
+    > ./run_server.sh && chmod +x ./run_server.sh && chmod +x ./run_server.sh
+
+ENTRYPOINT ["./run_server.sh"]
