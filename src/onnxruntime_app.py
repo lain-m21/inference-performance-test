@@ -4,7 +4,7 @@ import importlib
 import requests
 from sanic import Sanic
 from sanic.response import json as sanic_json
-
+from src.utils import predict_pb2
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +30,9 @@ async def predict(request):
     payload = predict_request.SerializeToString()
 
     res = requests.post(endpoint, headers=request_headers, data=payload)
-    outputs = output_module.decode_response(res)
+    actual_result = predict_pb2.PredictResponse()
+    actual_result.ParseFromString(res.content)
+    outputs = output_module.decode_response(actual_result)
     return sanic_json({'outputs': outputs})
 
 
