@@ -3,11 +3,16 @@ import argparse
 from cnn_finetune import make_model
 
 from src.models.mobilenetv2 import MobileNetV2
+from src.models.mobilenetv3 import MobileNetV3Large, MobileNetV3Small
 
 
 def main(args):
     if args.model_name == 'mobilenetv2':
         model = MobileNetV2(num_classes=1000)
+    elif args.model_name == 'mobilenetv3large':
+        model = MobileNetV3Large(n_classes=1000)
+    elif args.model_name == 'mobilenetv3small':
+        model = MobileNetV3Small(n_classes=1000)
     else:
         model = make_model(args.model_name, num_classes=1000, pretrained=True)
 
