@@ -13,38 +13,35 @@ FRAMEWORK=sanic
 RATE=10
 DURATION=5
 
-.PHONY: pull-tf-serving-image
-pull-tf-serving-image:
+.PHONY: pull-tf-serving-base-image
+pull-tf-serving-base-image:
 	docker pull ${TF_SERVING_IMAGE}
 
 .PHONY: install-vegeta-attack
 install-vegeta-attack:
 	go get -u github.com/tsenart/vegeta
 
-.PHONY: build-tf-serving-optimized-image
-build-tf-serving-optimized-image:
+.PHONY: build-tf-serving-optimized-base-image
+build-tf-serving-optimized-base-image:
 	docker build --pull -t ${TF_SERVING_OPTIMIZED_IMAGE} \
     --build-arg TF_SERVING_VERSION_GIT_BRANCH="${TF_SERVING_VERSION_GIT_BRANCH}" \
     --build-arg TF_SERVING_BUILD_OPTIONS="${TF_SERVING_BUILD_OPTIONS}" \
     -f dockerfiles/Dockerfile.tf_serving.optimized .
 
-.PHONY: build-tf-serving-mkl-image
-build-tf-serving-mkl-image:
+.PHONY: build-tf-serving-mkl-base-image
+build-tf-serving-mkl-base-image:
 	docker build --pull -t ${TF_SERVING_MKL_IMAGE} \
 	-f dockerfiles/Dockerfile.tf_serving.mkl .
 
-.PHONY: build-onnx-image
-build-onnx-image:
+.PHONY: build-onnx-base-image
+build-onnx-base-image:
 	docker build --pull -t ${ONNX_SERVING_IMAGE} \
 	-f dockerfiles/Dockerfile.onnx_serving .
 
-.PHONY: build-onnxruntime-image
-build-onnxruntime-image:
+.PHONY: build-onnxruntime-base-image
+build-onnxruntime-base-image:
 	docker build --pull -t ${ONNXRUNTIME_SERVING_IMAGE} \
 	-f dockerfiles/Dockerfile.onnxruntime_serving .
-
-.PHONY: builld-all
-build-all: build-tf-serving-optimized-image build-onnx-image build-onnxruntime-image
 
 .PHONY: load-test-tf
 load-test-tf:
