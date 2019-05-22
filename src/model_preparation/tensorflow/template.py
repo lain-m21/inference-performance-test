@@ -1,8 +1,9 @@
+import argparse
 import tensorflow as tf
 from tensorflow.python.keras.applications import *
 
 
-def prepare_model(args):
+def main(args):
     if args.model_name == 'vgg16':
         model = VGG16(weights=None, include_top=True, classes=1000)
     elif args.model_name == 'vgg19':
@@ -41,3 +42,17 @@ def prepare_model(args):
             inputs={'input_0': model.input},
             outputs={'output_0': model.outputs[0]}
         )
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model-name',
+                        default='densenet121',
+                        type=str,
+                        help='Model name to initialize in template')
+    parser.add_argument('--model-save-path',
+                        default='./data/model.onnx',
+                        type=str,
+                        help='Path to save the model.')
+    args = parser.parse_args()
+    main(args)
