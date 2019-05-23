@@ -51,7 +51,7 @@ if __name__ == '__main__':
                         type=str,
                         help='Model name to initialize in template')
     parser.add_argument('--model-save-path',
-                        default='./data/model.onnx',
+                        default='./data/tf_model',
                         type=str,
                         help='Path to save the model.')
     args = parser.parse_args()
