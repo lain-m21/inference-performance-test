@@ -29,14 +29,14 @@ class MIMOModel(nn.Module):
         x_text = self.embedding(input_text)  # (batch_size, seq_len, hidden_dim)
         x_text = torch.transpose(x_text, 2, 1)  # (batch_size, hidden_dim, seq_len)
         x_text = self.conv_sequence(x_text)
-        x_text = self.pool_sequence(x_text)  # (batch_size, hidden_dim, 1)
-        text_features = torch.squeeze(x_text, dim=-1)  # (batch_size, hidden_dim)
+        text_features = self.pool_sequence(x_text)  # (batch_size, hidden_dim, 1)
+        # text_features = torch.squeeze(x_text, dim=-1)  # (batch_size, hidden_dim)
 
         # Extract image features
         image_features = self.image_forward(input_image)
 
         # Concatenate features and feed into higher layer
-        concat_features = torch.cat((text_features, image_features), dim=1)
+        concat_features = torch.cat((text_features.view(-1, 128), image_features), dim=1)
         output_feature = self.features(concat_features)
         output_proba = self.output_layer(output_feature)
         return output_feature, output_proba
