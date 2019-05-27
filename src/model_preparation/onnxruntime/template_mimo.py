@@ -45,8 +45,8 @@ class MIMOModel(nn.Module):
 def main(args):
     model = MIMOModel(max_vocab=args.max_vocab, seq_len=args.seq_len)
 
-    x_dummy_text = torch.LongTensor(np.concatenate([np.random.randint(0, 4999, 60).reshape(1, -1) for _ in range(16)]))
-    x_dummy_image = torch.FloatTensor(np.random.rand(16, 3, 224, 224).astype(np.float32))
+    x_dummy_text = torch.LongTensor(np.random.randint(0, 4999, 60).reshape(1, -1))
+    x_dummy_image = torch.FloatTensor(np.random.rand(1, 3, 224, 224).astype(np.float32))
 
     input_names = ['input_text', 'input_image']
     output_names = ['output_feature', 'output_proba']
